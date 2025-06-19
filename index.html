@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أنمي جالاكسي</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🌌 أنمي جالاكسي</h1>
+    <nav>
+      <ul>
+        <li><a href="#">الرئيسية</a></li>
+        <li><a href="#">تسجيل الدخول</a></li>
+        <li><a href="#">الحلقات</a></li>
+        <li><a href="#">التعليقات</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div class="content">
+    <h2>🎥 مشغل الحلقات</h2>
+    <div class="video-list">
+      <button onclick="loadVideo('https://www.youtube.com/watch?v=aI7e4vNGo7M', 'youtube')">قاتل الشياطين 1 (يوتيوب)</button>
+      <button onclick="loadVideo('https://www.youtube.com/watch?v=t6MXHczeEqc', 'youtube')">عرض رسمي</button>
+      <button onclick="loadVideo('myanime_episode_custom_1.mp4', 'mp4')">حلقة خاصة 1 (MP4)</button>
+      <button onclick="loadVideo('myanime_episode_custom_2.mp4', 'mp4')">حلقة خاصة 2 (MP4)</button>
+    </div>
+    <video id="player" playsinline controls></video>
+    <div class="comments">
+      <h3>💬 التعليقات</h3>
+      <textarea id="commentInput" placeholder="اكتب تعليقك هنا..."></textarea>
+      <button onclick="submitComment()">إرسال</button>
+      <div id="commentsContainer"></div>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; 2025 أنمي جالاكسي</p>
+  </footer>
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <script>
+    const player = new Plyr('#player');
+    function loadVideo(source, type) {
+      const video = document.getElementById('player');
+      if (type === 'youtube') {
+        player.source = {
+          type: 'video',
+          sources: [{ src: source.split('v=')[1], provider: 'youtube' }]
+        };
+      } else {
+        player.source = {
+          type: 'video',
+          sources: [{ src: source, type: 'video/mp4' }]
+        };
+      }
+    }
+    function submitComment() {
+      const input = document.getElementById('commentInput');
+      const text = input.value.trim();
+      if (text !== '') {
+        const container = document.getElementById('commentsContainer');
+        const div = document.createElement('div');
+        div.className = 'comment-item';
+        div.textContent = text;
+        container.prepend(div);
+        input.value = '';
+      }
+    }
+    loadVideo('https://www.youtube.com/watch?v=aI7e4vNGo7M', 'youtube');
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker Registered'));
+    }
+  </script>
+</body>
+</html>
